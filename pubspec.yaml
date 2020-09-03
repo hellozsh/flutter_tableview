@@ -1,6 +1,6 @@
 name: tableview
 description: A Tableview that can hover over and set scrollBar
-version: 0.0.1
+version: 0.0.3
 homepage: https://github.com/hellozsh/flutter_tableview
 
 environment:

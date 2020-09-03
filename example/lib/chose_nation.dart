@@ -9,7 +9,6 @@ class ChoseNation extends StatefulWidget {
 
 class ChoseNationState extends State<ChoseNation> {
 
-  static List<String> topList = ["汉族","壮族","回族","满族","维吾尔族","苗族","彝族","土家族","藏族","蒙古族"];
   static List<String> headerList = ["A","B","C","D","E","G","H","J","K","L","M","N","P","Q","S","T","W","X","Y","Z"];
   static List<List<String>> rowList = [
     ["阿昌族"],
@@ -99,80 +98,41 @@ class ChoseNationState extends State<ChoseNation> {
   @override
   Widget build(BuildContext context) {
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+    return NotificationListener<TableViewNotifier> (
+      onNotification: (notification) {
 
-        Container(
-          padding: EdgeInsets.only(left: space,bottom: 10),
-          child: Wrap(
-            spacing: space,
-            runSpacing: 10,
-            children: topList.map((text) {
-              return GestureDetector(
-                child: Container(
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(
-                      width: 0.5, //边框宽度
-                      color: Colors.grey,
-                    ), // 边
-                  ),
-                  height: 31,
-                  width: btnWidth,
-                  child: Text(
-                    text,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop(text);
-                },
-              );
-            }).toList(),
-          ),
-        ),
-        Expanded(child: NotificationListener<TableViewNotifier> (
-          onNotification: (notification) {
+        choseSection = notification.scrollSection;
+        setState(() {
 
-            choseSection = notification.scrollSection;
+        });
+        return true;
+      },
+      child: TableView(
+        delegate: delegate,
+        scrollbar: TableViewHeaderScrollBar(
+          headerTitleList: headerList,
+          itemHeight: 20,
+          startAlignment: Alignment.centerRight,
+          choseSection: choseSection,
+          indexChanged: (index) {
+            title = headerList[index];
+            choseSection = index;
             setState(() {
 
             });
-            return true;
           },
-          child: TableView(
-            delegate: delegate,
-            scrollbar: TableViewHeaderScrollBar(
-              headerTitleList: headerList,
-              itemHeight: 20,
-              startAlignment: Alignment.centerRight,
-              choseSection: choseSection,
-              indexChanged: (index) {
-                title = headerList[index];
-                choseSection = index;
-                setState(() {
+          gestureFinished: (){
+            title = "";
+            setState(() {
 
-                });
-              },
-              gestureFinished: (){
-                title = "";
-                setState(() {
-
-                });
-              },
-            ),
-            centerTip: TableViewCenterTitle(
-              alignment: Alignment.center,
-              title: title,
-            ),
-          ),
-        ),),
-      ],
+            });
+          },
+        ),
+        centerTip: TableViewCenterTitle(
+          alignment: Alignment.center,
+          title: title,
+        ),
+      ),
     );
   }
 
