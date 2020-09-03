@@ -1,0 +1,8 @@
+name: tableview_example
+description: An example project for the flutter router.
+
+dependencies:
+  flutter:
+    sdk: flutter
+  tableview:
+    path: ../
